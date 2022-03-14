@@ -2,3 +2,6 @@
 *.hex
 *.lst
 easysxb
+fltk-*
+wget-log
+.vscode
