@@ -264,6 +264,7 @@ char Terminal::getChar()
     }
   }
 #endif
+  return -1;
 }
 
 void Terminal::sendString(const char *s)
@@ -534,7 +535,7 @@ void Terminal::upload()
 
   Fl_Native_File_Chooser fc;
   fc.title("Upload Program");
-  fc.filter("HEX File\t*.hex\nSREC File\t*.srec\n");
+  fc.filter("S28 File\t*.s28\nHEX File\t*.hex\nSREC File\t*.srec\n");
   fc.options(Fl_Native_File_Chooser::PREVIEW);
   fc.type(Fl_Native_File_Chooser::BROWSE_FILE);
   fc.directory(load_dir);
@@ -555,7 +556,9 @@ void Terminal::upload()
     Terminal::uploadHex(fc.filename());
   else if(strcasecmp(ext, ".srec") == 0)
     Terminal::uploadSrec(fc.filename());
-  else Dialog::message("Upload Error", "Only .hex and .srec file extentions are supported.");
+  else if(strcasecmp(ext, ".s28") == 0)
+    Terminal::uploadSrec(fc.filename());
+  else Dialog::message("Upload Error", "Only ,s28, .hex and .srec file extentions are supported.");
 }
 
 //FIXME fscanf return value should be checked

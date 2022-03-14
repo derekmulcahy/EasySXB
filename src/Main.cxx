@@ -81,7 +81,7 @@ namespace
 int main(int argc, char *argv[])
 {
   // default to light theme
-  setLightTheme();
+  setDarkTheme();
 
   // parse command line
   int option_index = 0;
@@ -91,7 +91,8 @@ int main(int argc, char *argv[])
 #ifdef WIN32
   strcpy(Terminal::port_string, "COM1");
 #else
-  strcpy(Terminal::port_string, "/dev/ttyUSB0");
+  char *d = getenv("SXB_DEVICE");
+  strcpy(Terminal::port_string, d ? d : "/dev/ttyUSB0");
 #endif
 
   while(true)
@@ -173,7 +174,9 @@ int main(int argc, char *argv[])
       Terminal::uploadHex(file_string);
     else if(strcasecmp(ext, ".srec") == 0)
       Terminal::uploadSrec(file_string);
-    else Dialog::message("Upload Error", "Only .hex and .srec file extentions are supported.");
+    else if(strcasecmp(ext, ".s28") == 0)
+      Terminal::uploadSrec(file_string);
+    else Dialog::message("Upload Error", "Only .s28, .hex and .srec file extentions are supported.");
   }
 
   int ret = Fl::run();
